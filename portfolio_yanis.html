@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yanis Hilali-Bekka — Technicien informatique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #12161d;
+    --panel: #1a212b;
+    --panel-2: #1f2733;
+    --line: #2b3444;
+    --text: #edf1f5;
+    --muted: #8d97a8;
+    --teal: #5eead4;
+    --amber: #f5a855;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Space Grotesk', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--teal); outline-offset:3px;}
+
+  /* background grid, like blueprint paper */
+  .grid-bg{
+    position:fixed; inset:0; z-index:-1;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity:0.18;
+  }
+
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 28px; }
+
+  /* NAV */
+  header{
+    position:sticky; top:0; z-index:20;
+    background:rgba(18,22,29,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px; max-width:1040px; margin:0 auto;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-weight:600; font-size:15px; letter-spacing:0.02em;
+  }
+  .logo-node{
+    width:26px; height:26px; border:1.5px solid var(--teal); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--teal);
+  }
+  .navlinks{ display:flex; gap:26px; font-size:14px; color:var(--muted); }
+  .navlinks a{ text-decoration:none; transition:color .15s ease; }
+  .navlinks a:hover{ color:var(--text); }
+  @media (max-width:640px){ .navlinks{ display:none; } }
+
+  /* HERO */
+  .hero{
+    padding:88px 0 64px;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;
+  }
+  @media (max-width:800px){ .hero{ grid-template-columns:1fr; padding:56px 0 40px; } }
+
+  .eyebrow-line{
+    display:flex; align-items:center; gap:10px; margin-bottom:22px;
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--teal);
+  }
+  .eyebrow-line .dot{ width:6px; height:6px; border-radius:50%; background:var(--teal); }
+
+  h1{
+    font-size:clamp(34px, 5vw, 52px);
+    font-weight:700;
+    line-height:1.08;
+    letter-spacing:-0.01em;
+  }
+  .hero p.lead{
+    margin-top:18px; max-width:46ch;
+    color:var(--muted); font-size:16.5px;
+  }
+
+  .facts{
+    margin-top:32px; display:grid; grid-template-columns:1fr 1fr; gap:14px 28px;
+    max-width:440px;
+  }
+  .fact{ border-left:2px solid var(--line); padding-left:12px; }
+  .fact .k{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--muted); text-transform:lowercase; }
+  .fact .v{ font-size:14.5px; margin-top:2px; }
+
+  .hero-diagram{ width:100%; }
+
+  .cta-row{ margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 22px; border-radius:var(--radius);
+    font-size:14.5px; font-weight:500; text-decoration:none;
+    border:1px solid transparent; cursor:pointer;
+    transition:transform .12s ease, border-color .15s ease, background .15s ease;
+  }
+  .btn-primary{
+    background:var(--teal); color:#0d1117;
+  }
+  .btn-primary:hover{ transform:translateY(-1px); background:#7ff2df; }
+  .btn-ghost{
+    border-color:var(--line); color:var(--text);
+  }
+  .btn-ghost:hover{ border-color:var(--teal); color:var(--teal); }
+
+  /* SECTION generic */
+  section{ padding:64px 0; border-top:1px solid var(--line); }
+  .section-head{
+    display:flex; align-items:baseline; gap:14px; margin-bottom:34px;
+  }
+  .section-num{ font-family:'IBM Plex Mono', monospace; color:var(--amber); font-size:13px; }
+  h2{ font-size:24px; font-weight:600; letter-spacing:-0.01em; }
+  .section-sub{ color:var(--muted); font-size:14.5px; max-width:56ch; margin-bottom:30px; }
+
+  /* PROFIL */
+  .profil-text{ max-width:66ch; font-size:16px; color:#d6dce3; }
+
+  /* COMPETENCES - patch panel style */
+  .rack{ display:grid; grid-template-columns:repeat(2, 1fr); gap:14px; }
+  @media (max-width:700px){ .rack{ grid-template-columns:1fr; } }
+  .node{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    position:relative;
+  }
+  .node::before{
+    content:'';
+    position:absolute; left:0; top:18px; bottom:18px; width:3px;
+    background:var(--teal); border-radius:2px;
+  }
+  .node-id{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--teal); margin-bottom:8px;
+  }
+  .node-title{ font-size:16px; font-weight:600; margin-bottom:8px; }
+  .node-desc{ font-size:14px; color:var(--muted); }
+
+  /* TIMELINE - parcours */
+  .timeline{ position:relative; padding-left:26px; }
+  .timeline::before{
+    content:''; position:absolute; left:5px; top:6px; bottom:6px; width:1px;
+    background:var(--line);
+  }
+  .tl-item{ position:relative; padding-bottom:30px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:''; position:absolute; left:-26px; top:5px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--amber);
+  }
+  .tl-date{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--amber); }
+  .tl-title{ font-size:15.5px; font-weight:600; margin-top:4px; }
+  .tl-place{ font-size:14px; color:var(--muted); margin-top:2px; }
+
+  /* EXPERIENCE - compact list */
+  .exp-list{ display:flex; flex-direction:column; }
+  .exp-row{
+    display:grid; grid-template-columns:150px 1fr; gap:18px;
+    padding:16px 0; border-bottom:1px solid var(--line);
+  }
+  .exp-row:last-child{ border-bottom:none; }
+  .exp-date{ font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--muted); padding-top:2px; }
+  .exp-role{ font-size:15px; font-weight:600; }
+  .exp-org{ font-size:13.5px; color:var(--muted); margin-top:2px; }
+  @media (max-width:560px){ .exp-row{ grid-template-columns:1fr; gap:4px; } }
+
+  /* LANGUES / INTERETS */
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+  @media (max-width:640px){ .two-col{ grid-template-columns:1fr; gap:28px; } }
+  .lang-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--line); font-size:14.5px; }
+  .lang-row:last-child{ border-bottom:none; }
+  .lang-level{ font-family:'IBM Plex Mono', monospace; color:var(--teal); font-size:13px; }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    border:1px solid var(--line); border-radius:20px; padding:8px 16px;
+    font-size:13.5px; color:var(--muted);
+  }
+
+  /* CONTACT */
+  .contact-panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:44px 36px;
+    display:grid; grid-template-columns:1.2fr 1fr; gap:32px; align-items:center;
+  }
+  @media (max-width:700px){ .contact-panel{ grid-template-columns:1fr; padding:32px 24px; } }
+  .contact-panel h2{ margin-bottom:10px; }
+  .contact-panel p{ color:var(--muted); font-size:15px; max-width:42ch; }
+  .contact-info{ display:flex; flex-direction:column; gap:10px; font-size:14.5px; }
+  .contact-info .k{ font-family:'IBM Plex Mono', monospace; color:var(--muted); font-size:11.5px; }
+
+  footer{
+    padding:32px 0 48px; text-align:center;
+    color:var(--muted); font-size:13px; font-family:'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="logo-node">YH</span> Yanis Hilali-Bekka</div>
+    <div class="navlinks">
+      <a href="#profil">Profil</a>
+      <a href="#competences">Compétences</a>
+      <a href="#parcours">Parcours</a>
+      <a href="#experience">Expérience</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" style="border-top:none;">
+    <div>
+      <div class="eyebrow-line"><span class="dot"></span> Recherche de stage — 10 mai au 25 juin 2027</div>
+      <h1>Technicien informatique en formation, réseaux &amp; systèmes.</h1>
+      <p class="lead">Étudiant en 1ère année de BTS SIO à Melun, je configure des switches, des routeurs et je supervise des parcs informatiques. Je cherche une entreprise pour mettre ces compétences en pratique le temps d'un stage.</p>
+
+      <div class="facts">
+        <div class="fact"><div class="k">localisation</div><div class="v">Brie-Comte-Robert (77)</div></div>
+        <div class="fact"><div class="k">mobilité</div><div class="v">Permis B, véhiculé</div></div>
+        <div class="fact"><div class="k">formation</div><div class="v">BTS SIO, Lycée L. de Vinci</div></div>
+        <div class="fact"><div class="k">disponibilité</div><div class="v">10/05 → 25/06/2027</div></div>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:yanisbekka02@gmail.com?subject=Proposition%20de%20stage%20-%20technicien%20informatique&body=Bonjour%20Yanis%2C%0A%0A" >Me contacter</a>
+        <a class="btn btn-ghost" href="tel:0668448865">06 68 44 88 65</a>
+      </div>
+    </div>
+
+    <svg class="hero-diagram" viewBox="0 0 380 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- connecting lines -->
+      <line x1="190" y1="70" x2="90" y2="150" stroke="#2b3444" stroke-width="1.5"/>
+      <line x1="190" y1="70" x2="290" y2="150" stroke="#2b3444" stroke-width="1.5"/>
+      <line x1="90" y1="150" x2="90" y2="250" stroke="#2b3444" stroke-width="1.5"/>
+      <line x1="290" y1="150" x2="290" y2="250" stroke="#2b3444" stroke-width="1.5"/>
+      <line x1="90" y1="150" x2="290" y2="150" stroke="#2b3444" stroke-width="1.5"/>
+      <line x1="190" y1="70" x2="190" y2="150" stroke-dasharray="4 4" stroke="#5eead4" stroke-width="1.5">
+        <animate attributeName="stroke-dashoffset" from="0" to="-16" dur="1.4s" repeatCount="indefinite"/>
+      </line>
+
+      <!-- nodes -->
+      <rect x="160" y="45" width="60" height="34" rx="3" fill="#1a212b" stroke="#5eead4" stroke-width="1.4"/>
+      <text x="190" y="66" text-anchor="middle" fill="#5eead4" font-family="IBM Plex Mono" font-size="10">RT-CORE</text>
+
+      <rect x="60" y="133" width="60" height="34" rx="3" fill="#1a212b" stroke="#2b3444" stroke-width="1.4"/>
+      <text x="90" y="154" text-anchor="middle" fill="#edf1f5" font-family="IBM Plex Mono" font-size="10">SW-L2/L3</text>
+
+      <rect x="260" y="133" width="60" height="34" rx="3" fill="#1a212b" stroke="#2b3444" stroke-width="1.4"/>
+      <text x="290" y="154" text-anchor="middle" fill="#edf1f5" font-family="IBM Plex Mono" font-size="10">SW-L2/L3</text>
+
+      <circle cx="90" cy="250" r="20" fill="#1a212b" stroke="#f5a855" stroke-width="1.4"/>
+      <text x="90" y="254" text-anchor="middle" fill="#f5a855" font-family="IBM Plex Mono" font-size="9">VLAN</text>
+
+      <circle cx="290" cy="250" r="20" fill="#1a212b" stroke="#f5a855" stroke-width="1.4"/>
+      <text x="290" y="254" text-anchor="middle" fill="#f5a855" font-family="IBM Plex Mono" font-size="9">VLAN</text>
+    </svg>
+  </section>
+
+  <!-- PROFIL -->
+  <section id="profil">
+    <div class="section-head"><span class="section-num">01</span><h2>Profil</h2></div>
+    <p class="profil-text">Sérieux et motivé, je souhaite mettre en pratique mes compétences techniques au sein d'une entreprise tout en développant mon expérience professionnelle. Je suis à l'aise sur la configuration d'équipements réseau (commutateurs, routeurs), la supervision d'infrastructure et la gestion de parc informatique, et je cherche à contribuer concrètement aux projets qui me seront confiés.</p>
+  </section>
+
+  <!-- COMPETENCES -->
+  <section id="competences">
+    <div class="section-head"><span class="section-num">02</span><h2>Compétences techniques</h2></div>
+    <p class="section-sub">Acquises en BTS SIO, sur matériel HP et Cisco.</p>
+    <div class="rack">
+      <div class="node">
+        <div class="node-id">SW · niveaux 2 et 3</div>
+        <div class="node-title">Configuration de commutateurs (HP / Cisco)</div>
+        <div class="node-desc">Sauvegarde de configuration par TFTP, prise de contrôle à distance par SSH, mise en place de VLAN par port, étude du protocole spanning-tree.</div>
+      </div>
+      <div class="node">
+        <div class="node-id">RT · Cisco</div>
+        <div class="node-title">Configuration de routeurs</div>
+        <div class="node-desc">Routage inter-VLAN, mise en place d'ACL, utilisation du NAT.</div>
+      </div>
+      <div class="node">
+        <div class="node-id">SUP · Zabbix</div>
+        <div class="node-title">Supervision d'infrastructure</div>
+        <div class="node-desc">Mise en place et suivi de la supervision d'un parc avec l'outil Zabbix.</div>
+      </div>
+      <div class="node">
+        <div class="node-id">GLPI · ITIL</div>
+        <div class="node-title">Gestion de parc et de support</div>
+        <div class="node-desc">Gestion de parc informatique avec GLPI, traitement des demandes de support selon les bonnes pratiques ITIL.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARCOURS -->
+  <section id="parcours">
+    <div class="section-head"><span class="section-num">03</span><h2>Formation</h2></div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">2026 — 2027</div>
+        <div class="tl-title">1ère année de BTS SIO (Services Informatiques aux Organisations)</div>
+        <div class="tl-place">Lycée Léonard de Vinci, Melun</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Sept. — Déc. 2022</div>
+        <div class="tl-title">1ère année de BUT TC (Techniques de commercialisation)</div>
+        <div class="tl-place">IUT de Sénart, Lieusaint</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Juin 2022</div>
+        <div class="tl-title">Baccalauréat général — spécialités SES et HGGSP</div>
+        <div class="tl-place">Lycée Blaise Pascal, Brie-Comte-Robert</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Juin 2019</div>
+        <div class="tl-title">Brevet des collèges, mention Bien</div>
+        <div class="tl-place">Collège George Brassens, Brie-Comte-Robert</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-head"><span class="section-num">04</span><h2>Expériences professionnelles</h2></div>
+    <div class="exp-list">
+      <div class="exp-row">
+        <div class="exp-date">Août — Sept. 2025</div>
+        <div><div class="exp-role">Manutentionnaire</div><div class="exp-org">Chronopost, Brie-Comte-Robert</div></div>
+      </div>
+      <div class="exp-row">
+        <div class="exp-date">Mai — Juin 2025</div>
+        <div><div class="exp-role">Préparateur de commande, déchargement de camions</div><div class="exp-org">SDLT (Coquelle), Servon</div></div>
+      </div>
+      <div class="exp-row">
+        <div class="exp-date">Fév. — Mars 2025</div>
+        <div><div class="exp-role">Agent libre-service, manutentionnaire</div><div class="exp-org">Isla Food, Villeneuve-Saint-Georges</div></div>
+      </div>
+      <div class="exp-row">
+        <div class="exp-date">2023 — 2024</div>
+        <div><div class="exp-role">Agent de tri</div><div class="exp-org">Colissimo, Brie-Comte-Robert</div></div>
+      </div>
+      <div class="exp-row">
+        <div class="exp-date">2023</div>
+        <div><div class="exp-role">Manutentionnaire (missions)</div><div class="exp-org">SDLT, Comeback, Kalhyge, Advance Paris — Île-de-France</div></div>
+      </div>
+      <div class="exp-row">
+        <div class="exp-date">Jan. — Juin 2020</div>
+        <div><div class="exp-role">Arbitre</div><div class="exp-org">Club de football SC Briard, Brie-Comte-Robert</div></div>
+      </div>
+      <div class="exp-row">
+        <div class="exp-date">Déc. 2019</div>
+        <div><div class="exp-role">Stage de découverte — métier d'enseignant d'EPS</div><div class="exp-org">Collège George Brassens, Brie-Comte-Robert</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUES / INTERETS -->
+  <section id="langues">
+    <div class="section-head"><span class="section-num">05</span><h2>Langues &amp; centres d'intérêt</h2></div>
+    <div class="two-col">
+      <div>
+        <div class="lang-row"><span>Français</span><span class="lang-level">langue natale</span></div>
+        <div class="lang-row"><span>Anglais</span><span class="lang-level">B1</span></div>
+        <div class="lang-row"><span>Espagnol</span><span class="lang-level">B1</span></div>
+      </div>
+      <div class="chip-row">
+        <span class="chip">Informatique</span>
+        <span class="chip">Lecture</span>
+        <span class="chip">Sport</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-head"><span class="section-num">06</span><h2>Contact</h2></div>
+    <div class="contact-panel">
+      <div>
+        <h2>Une entreprise pour mon stage ?</h2>
+        <p>Disponible du 10 mai au 25 juin 2027, mobile en Île-de-France. Je réponds rapidement par e-mail ou téléphone.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:yanisbekka02@gmail.com?subject=Proposition%20de%20stage%20-%20technicien%20informatique&body=Bonjour%20Yanis%2C%0A%0A">Me contacter</a>
+        </div>
+      </div>
+      <div class="contact-info">
+        <div><div class="k">e-mail</div>yanisbekka02@gmail.com</div>
+        <div><div class="k">téléphone</div>06 68 44 88 65</div>
+        <div><div class="k">localisation</div>77170 Brie-Comte-Robert</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Yanis Hilali-Bekka — BTS SIO — 2026</footer>
+
+</body>
+</html>
